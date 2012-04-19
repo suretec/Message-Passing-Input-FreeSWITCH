@@ -9,7 +9,7 @@ license 'AGPL_3';
 requires 'Moose';
 requires 'namespace::autoclean';
 requires 'AnyEvent';
-requires 'ESL' => '0.21';
+requires 'ESL';
 requires 'JSON';
 requires 'JSON::XS';
 requires 'Try::Tiny';
