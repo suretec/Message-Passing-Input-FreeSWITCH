@@ -5,6 +5,8 @@ use Scalar::Util qw/ weaken /;
 use Try::Tiny qw/ try catch /;
 use namespace::autoclean;
 
+our $VERSION = '0.001';
+
 with qw/
     Log::Stash::Role::Input
 /;
