@@ -19,7 +19,7 @@ has port => (
     isa => 'Int',
     required => 1,
     is => 'ro',
-    default => 8201,
+    default => 8021,
 );
 
 has secret => (
@@ -36,10 +36,11 @@ has '_connection' => (
         require ESL;
         # FIXME Retarded SWIG bindings want the port number as a string, not an int
         #       so we explicitly stringify it
-        my $con = ESL::ESLconnection->($self->host, $self->port."", $self->secret);
+        my $con = new ESL::ESLconnection($self->host, $self->port."", $self->secret);
         die("Could not connect to freeswitch on " . $self->host . ":" . $self->port)
             unless $con;
         $con->events("plain", "all");
+        $con->connected() || die "Could not get connection";
         return $con;
     },
     is => 'ro',
@@ -73,7 +74,8 @@ has _io_reader => (
     default => sub {
         my $weak_self = shift;
         weaken($weak_self);
-        AE::io $weak_self->_connection_fd, 0,
+        my $fd =  $weak_self->_connection_fd;
+        AE::io $fd, 0,
             sub { my $more; do { $more = $weak_self->_try_rx } while ($more) };
     },
     clearer => '_clear_io_reader',
