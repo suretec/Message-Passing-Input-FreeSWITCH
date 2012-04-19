@@ -1,6 +1,5 @@
 package Log::Stash::Input::Freeswitch;
 use Moose;
-use ESL;
 use AnyEvent;
 use Scalar::Util qw/ weaken /;
 use Try::Tiny qw/ try catch /;
@@ -34,8 +33,12 @@ has '_connection' => (
     lazy => 1,
     default => sub {
         my $self = shift;
-        my $con = ESL::ESLconnection->new($self->host, $self->port, $self->secret);
-        die("Could not connect to freeswitch on " . $self->host . ":" . $self->port);
+        require ESL;
+        # FIXME Retarded SWIG bindings want the port number as a string, not an int
+        #       so we explicitly stringify it
+        my $con = ESL::ESLconnection->($self->host, $self->port."", $self->secret);
+        die("Could not connect to freeswitch on " . $self->host . ":" . $self->port)
+            unless $con;
         $con->events("plain", "all");
         return $con;
     },
@@ -86,7 +89,6 @@ sub _terminate_connection {
 sub BUILD {
     my $self = shift;
     $self->_io_reader;
-    $self->_zmq_timer;
 }
 
 1;
