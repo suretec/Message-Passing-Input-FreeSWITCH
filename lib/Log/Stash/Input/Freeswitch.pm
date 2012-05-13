@@ -55,6 +55,10 @@ has '_connection' => (
 sub _try_rx {
     my $self = shift;
     my $con = $self->_connection;
+    if (!$con->connected) {
+        $self->_terminate_connection;
+        return;
+    }
     my $e = $con->recvEventTimed(0);
 
     if ($e) {
@@ -87,7 +91,16 @@ sub _terminate_connection {
     my $self = shift;
     $self->_clear_io_reader;
     $self->_clear_connection;
-
+    weaken($self);
+    # Push building the io reader here as an idle task,
+    # to avoid blowing up the stack.... (We're already in a callback here)
+    # This probably isn't totally necessary, but avoids potential recursion issues.
+    my $i; $i = AnyEvent->idle(
+        cb => sub {
+            undef $i;
+            $self->_io_reader;
+        },
+    );
 }
 
 sub BUILD {
