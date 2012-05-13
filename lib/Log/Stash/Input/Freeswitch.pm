@@ -30,6 +30,12 @@ has secret => (
     required => 1,
 );
 
+has connection_retry_timeout => (
+    is => 'ro',
+    isa => 'Int',
+    default => 3,
+);
+
 has '_connection' => (
     isa => 'ESL::ESLconnection',
     lazy => 1,
@@ -39,10 +45,16 @@ has '_connection' => (
         # FIXME Retarded SWIG bindings want the port number as a string, not an int
         #       so we explicitly stringify it
         my $con = new ESL::ESLconnection($self->host, $self->port."", $self->secret);
-        die("Could not connect to freeswitch on " . $self->host . ":" . $self->port)
-            unless $con;
+        unless ($con) {
+            warn("Could not connect to freeswitch on " . $self->host . ":" . $self->port);
+            $self->_terminate_connection($self->connection_retry_timeout);
+            $con = bless {}, 'ESL::ESLconnection';
+        }
         $con->events("plain", "all");
-        $con->connected() || die "Could not get connection";
+        $con->connected() || do {
+            $con->disconnect;
+            $self->_terminate_connection($self->connection_retry_timeout);
+        };
         return $con;
     },
     is => 'ro',
@@ -81,6 +93,7 @@ has _io_reader => (
         my $weak_self = shift;
         weaken($weak_self);
         my $fd =  $weak_self->_connection_fd;
+        return unless $fd >= 0;
         AE::io $fd, 0,
             sub { my $more; do { $more = $weak_self->_try_rx } while ($more) };
     },
@@ -88,24 +101,41 @@ has _io_reader => (
 );
 
 sub _terminate_connection {
-    my $self = shift;
-    $self->_clear_io_reader;
-    $self->_clear_connection;
+    my ($self, $retry) = @_;
+    $retry ||= 0;
     weaken($self);
     # Push building the io reader here as an idle task,
     # to avoid blowing up the stack.... (We're already in a callback here)
     # This probably isn't totally necessary, but avoids potential recursion issues.
-    my $i; $i = AnyEvent->idle(
+    my $i; $i = AnyEvent->timer(
+        after => $retry,
         cb => sub {
             undef $i;
+            $self->_clear_io_reader;
+            $self->_clear_connection;
             $self->_io_reader;
         },
     );
 }
 
+has _connection_checker => (
+    is => 'ro',
+    lazy => 1,
+    default => sub {
+        my $self = shift;
+        weaken($self);
+        AnyEvent->timer( after => $self->connection_retry_timeout, every => $self->connection_retry_timeout,
+            cb => sub {
+                $self->_try_rx;
+            },
+        );
+    },
+);
+
 sub BUILD {
     my $self = shift;
     $self->_io_reader;
+    $self->_connection_checker;
 }
 
 1;
