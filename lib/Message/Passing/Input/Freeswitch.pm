@@ -1,4 +1,4 @@
-package Log::Stash::Input::Freeswitch;
+package Message::Passing::Input::Freeswitch;
 use Moose;
 use AnyEvent;
 use Scalar::Util qw/ weaken /;
@@ -8,7 +8,7 @@ use namespace::autoclean;
 our $VERSION = '0.001';
 
 with qw/
-    Log::Stash::Role::Input
+    Message::Passing::Role::Input
 /;
 
 has host => (
@@ -142,7 +142,7 @@ sub BUILD {
 
 =head1 NAME
 
-Log::Stash::Input::ZeroMQ - input logstash messages from ZeroMQ.
+Message::Passing::Input::ZeroMQ - input logstash messages from ZeroMQ.
 
 =head1 DESCRIPTION
 
@@ -150,11 +150,11 @@ Log::Stash::Input::ZeroMQ - input logstash messages from ZeroMQ.
 
 =over
 
-=item L<Log::Stash::ZeroMQ>
+=item L<Message::Passing::ZeroMQ>
 
-=item L<Log::Stash::Output::ZeroMQ>
+=item L<Message::Passing::Output::ZeroMQ>
 
-=item L<Log::Stash>
+=item L<Message::Passing>
 
 =item L<ZeroMQ>
 
@@ -172,7 +172,7 @@ the SureVoIP API -
 
 =head1 AUTHOR, COPYRIGHT AND LICENSE
 
-See L<Log::Stash>.
+See L<Message::Passing>.
 
 =cut
 
