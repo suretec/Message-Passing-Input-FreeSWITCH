@@ -1,11 +1,11 @@
 NAME
-    Log::Stash::Input::ZeroMQ - input logstash messages from ZeroMQ.
+    Message::Passing::Input::ZeroMQ - input logstash messages from ZeroMQ.
 
 DESCRIPTION
 SEE ALSO
-    Log::Stash::ZeroMQ
-    Log::Stash::Output::ZeroMQ
-    Log::Stash
+    Message::Passing::ZeroMQ
+    Message::Passing::Output::ZeroMQ
+    Message::Passing
     ZeroMQ
     <http://www.zeromq.org/>
 
@@ -17,5 +17,5 @@ SPONSORSHIP
     <http://www.surevoip.co.uk/support/wiki/api_documentation>
 
 AUTHOR, COPYRIGHT AND LICENSE
-    See Log::Stash.
+    See Message::Passing.
 
