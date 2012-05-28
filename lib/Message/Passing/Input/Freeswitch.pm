@@ -143,25 +143,37 @@ sub BUILD {
 
 =head1 NAME
 
-Message::Passing::Input::ZeroMQ - input logstash messages from ZeroMQ.
+Message::Passing::Input::Freeswitch - input messages from Freeswitch.
+
+=head1 SYNOPSIS
+
+    message-pass --input Freeswitch --input_options \
+        '{"host":"127.0.0.1","secret":"s3kriTk3y"}' \
+        --output STDOUT
 
 =head1 DESCRIPTION
+
+Produces a message stream from a L<http://www.freeswitch.org/|Freeswitch>
+instance.
+
+Uses the Freeswitch L<http://wiki.freeswitch.org/wiki/Event_Socket_Library|Event Socket Library> to connect to a local or remote Freeswitch instance
+and stream event messages.
 
 =head1 SEE ALSO
 
 =over
 
-=item L<Message::Passing::ZeroMQ>
-
-=item L<Message::Passing::Output::ZeroMQ>
-
 =item L<Message::Passing>
 
-=item L<ZeroMQ>
+=item L<http://www.freeswitch.org/>
 
-=item L<http://www.zeromq.org/>
+=item L<http://wiki.freeswitch.org/wiki/Event_Socket_Library>
 
 =back
+
+=head1 AUTHOR
+
+Tomas (t0m) Doran <bobtfish@bobtfish.net>
 
 =head1 SPONSORSHIP
 
@@ -171,9 +183,20 @@ VoIP division called SureVoIP <http://www.surevoip.co.uk/> for use with
 the SureVoIP API - 
 <http://www.surevoip.co.uk/support/wiki/api_documentation>
 
-=head1 AUTHOR, COPYRIGHT AND LICENSE
+=head1 COPYRIGHT
 
-See L<Message::Passing>.
+Copyright Suretec Systems Ltd. 2012.
+
+Logstash (upon which many ideas for this project is based, but
+which we do not reuse any code from) is copyright 2010 Jorden Sissel.
+
+=head1 LICENSE
+
+GNU Affero General Public License, Version 3
+
+If you feel this is too restrictive to be able to use this software,
+please talk to us as we'd be willing to consider re-licensing under
+less restrictive terms.
 
 =cut
 
