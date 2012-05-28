@@ -1,13 +1,26 @@
 NAME
-    Message::Passing::Input::ZeroMQ - input logstash messages from ZeroMQ.
+    Message::Passing::Input::Freeswitch - input messages from Freeswitch.
+
+SYNOPSIS
+        message-pass --input Freeswitch --input_options \
+            '{"host":"127.0.0.1","secret":"s3kriTk3y"}' \
+            --output STDOUT
 
 DESCRIPTION
+    Produces a message stream from a <http://www.freeswitch.org/|Freeswitch>
+    instance.
+
+    Uses the Freeswitch http://wiki.freeswitch.org/wiki/Event_Socket_Library
+    to connect to a local or remote Freeswitch instance and stream event
+    messages.
+
 SEE ALSO
-    Message::Passing::ZeroMQ
-    Message::Passing::Output::ZeroMQ
     Message::Passing
-    ZeroMQ
-    <http://www.zeromq.org/>
+    <http://www.freeswitch.org/>
+    <http://wiki.freeswitch.org/wiki/Event_Socket_Library>
+
+AUTHOR
+    Tomas (t0m) Doran <bobtfish@bobtfish.net>
 
 SPONSORSHIP
     This module exists due to the wonderful people at Suretec Systems Ltd.
@@ -16,6 +29,16 @@ SPONSORSHIP
     the SureVoIP API -
     <http://www.surevoip.co.uk/support/wiki/api_documentation>
 
-AUTHOR, COPYRIGHT AND LICENSE
-    See Message::Passing.
+COPYRIGHT
+    Copyright Suretec Systems Ltd. 2012.
+
+    Logstash (upon which many ideas for this project is based, but which we
+    do not reuse any code from) is copyright 2010 Jorden Sissel.
+
+LICENSE
+    GNU Affero General Public License, Version 3
+
+    If you feel this is too restrictive to be able to use this software,
+    please talk to us as we'd be willing to consider re-licensing under less
+    restrictive terms.
 
