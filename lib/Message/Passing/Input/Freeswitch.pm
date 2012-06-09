@@ -156,7 +156,6 @@ Message::Passing::Input::Freeswitch - input messages from Freeswitch.
 
     message-pass --input Freeswitch --input_options \
         '{"host":"127.0.0.1","secret":"s3kriTk3y"}' \
-        --decoder Null \
         --output STDOUT
 
 =head1 DESCRIPTION
@@ -166,10 +165,6 @@ instance.
 
 Uses the Freeswitch L<|Event Socket Library|http://wiki.freeswitch.org/wiki/Event_Socket_Library>
 to connect to a local or remote Freeswitch instance and stream event messages.
-
-These messages are decoded into a perl hashref automatically by the input, so
-if you're using the C<message-pass> command, you need to explicitly specify a null decoder
-as shown above.
 
 =head1 ATTRIBUTES
 

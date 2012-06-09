@@ -4,7 +4,6 @@ NAME
 SYNOPSIS
         message-pass --input Freeswitch --input_options \
             '{"host":"127.0.0.1","secret":"s3kriTk3y"}' \
-            --decoder Null \
             --output STDOUT
 
 DESCRIPTION
@@ -13,10 +12,6 @@ DESCRIPTION
 
     Uses the Freeswitch to connect to a local or remote Freeswitch instance
     and stream event messages.
-
-    These messages are decoded into a perl hashref automatically by the
-    input, so if you're using the "message-pass" command, you need to
-    explicitly specify a null decoder as shown above.
 
 ATTRIBUTES
   host
