@@ -12,7 +12,7 @@ requires 'AnyEvent';
 requires 'ESL';
 requires 'Try::Tiny';
 requires 'Task::Weaken';
-requires 'Message::Passing' => '0.006';
+requires 'Message::Passing' => '0.007';
 
 test_requires 'Test::More' => '0.88';
 
