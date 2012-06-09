@@ -10,12 +10,9 @@ requires 'Moose';
 requires 'namespace::autoclean';
 requires 'AnyEvent';
 requires 'ESL';
-requires 'JSON';
-requires 'JSON::XS';
 requires 'Try::Tiny';
 requires 'Task::Weaken';
-requires 'Message::Passing' => '0.002';
-requires 'Sub::Name';
+requires 'Message::Passing' => '0.006';
 
 test_requires 'Test::More' => '0.88';
 
