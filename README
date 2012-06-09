@@ -4,27 +4,54 @@ NAME
 SYNOPSIS
         message-pass --input Freeswitch --input_options \
             '{"host":"127.0.0.1","secret":"s3kriTk3y"}' \
+            --decoder Null \
             --output STDOUT
 
 DESCRIPTION
-    Produces a message stream from a <http://www.freeswitch.org/|Freeswitch>
+    Produces a message stream from a Freeswitch <http://www.freeswitch.org/>
     instance.
 
-    Uses the Freeswitch http://wiki.freeswitch.org/wiki/Event_Socket_Library
-    to connect to a local or remote Freeswitch instance and stream event
-    messages.
+    Uses the Freeswitch to connect to a local or remote Freeswitch instance
+    and stream event messages.
+
+    These messages are decoded into a perl hashref automatically by the
+    input, so if you're using the "message-pass" command, you need to
+    explicitly specify a null decoder as shown above.
+
+ATTRIBUTES
+  host
+    The Freeswitch host to connect to.
+
+  secret
+    The secret configured in Freeswitch for connecting to the event listener
+    socket.
+
+  connection_retry_timeout
+    The number of seconds to wait after a disconnect before reconnecting.
+    Default 3.
+
+  port
+    The port that Freeswitch's ESL socket is listening on. Defaults to 8021.
+
+  events
+    An arrayref of types of events to listen for. These types are documented
+    on the Freeswitch wiki <http://wiki.freeswitch.org/wiki/Event_List>.
+
+    By default, the special type, "all" is used - which means all event
+    types are subscribed to.
 
 SEE ALSO
     Message::Passing
     <http://www.freeswitch.org/>
     <http://wiki.freeswitch.org/wiki/Event_Socket_Library>
+    <http://wiki.freeswitch.org/wiki/Event_List>
 
 AUTHOR
     Tomas (t0m) Doran <bobtfish@bobtfish.net>
 
 SPONSORSHIP
     This module exists due to the wonderful people at Suretec Systems Ltd.
-    <http://www.suretecsystems.com/> who sponsored its development for its
+    <http://www.suretecsystems.com/> who sponsored it's development for its
     VoIP division called SureVoIP <http://www.surevoip.co.uk/> for use with
     the SureVoIP API -
     <http://www.surevoip.co.uk/support/wiki/api_documentation>

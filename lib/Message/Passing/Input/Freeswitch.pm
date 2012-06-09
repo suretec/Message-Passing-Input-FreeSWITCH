@@ -20,7 +20,6 @@ has host => (
 
 has port => (
     isa => 'Int',
-    required => 1,
     is => 'ro',
     default => 8021,
 );
@@ -37,6 +36,12 @@ has connection_retry_timeout => (
     default => 3,
 );
 
+has event_types => (
+    is => 'ro',
+    isa => 'ArrayRef[Str]',
+    default => sub { ['all'] },
+);
+
 has '_connection' => (
     isa => 'ESL::ESLconnection',
     lazy => 1,
@@ -51,7 +56,9 @@ has '_connection' => (
             $self->_terminate_connection($self->connection_retry_timeout);
             $con = bless {}, 'ESL::ESLconnection';
         }
-        $con->events("plain", "all");
+        foreach my $name (@{$self->event_types}) {
+            $con->events("plain", $name);
+        }
         $con->connected() || do {
             $con->disconnect;
             $self->_terminate_connection($self->connection_retry_timeout);
@@ -149,15 +156,46 @@ Message::Passing::Input::Freeswitch - input messages from Freeswitch.
 
     message-pass --input Freeswitch --input_options \
         '{"host":"127.0.0.1","secret":"s3kriTk3y"}' \
+        --decoder Null \
         --output STDOUT
 
 =head1 DESCRIPTION
 
-Produces a message stream from a L<http://www.freeswitch.org/|Freeswitch>
+Produces a message stream from a L<Freeswitch|http://www.freeswitch.org/>
 instance.
 
-Uses the Freeswitch L<http://wiki.freeswitch.org/wiki/Event_Socket_Library|Event Socket Library> to connect to a local or remote Freeswitch instance
-and stream event messages.
+Uses the Freeswitch L<|Event Socket Library|http://wiki.freeswitch.org/wiki/Event_Socket_Library>
+to connect to a local or remote Freeswitch instance and stream event messages.
+
+These messages are decoded into a perl hashref automatically by the input, so
+if you're using the C<message-pass> command, you need to explicitly specify a null decoder
+as shown above.
+
+=head1 ATTRIBUTES
+
+=head2 host
+
+The Freeswitch host to connect to.
+
+=head2 secret
+
+The secret configured in Freeswitch for connecting to the event listener socket.
+
+=head2 connection_retry_timeout
+
+The number of seconds to wait after a disconnect before reconnecting. Default 3.
+
+=head2 port
+
+The port that Freeswitch's ESL socket is listening on. Defaults to 8021.
+
+=head2 events
+
+An arrayref of types of events to listen for. These types are documented
+L<on the Freeswitch wiki|http://wiki.freeswitch.org/wiki/Event_List>.
+
+By default, the special type, C<all> is used - which means all event types
+are subscribed to.
 
 =head1 SEE ALSO
 
@@ -168,6 +206,8 @@ and stream event messages.
 =item L<http://www.freeswitch.org/>
 
 =item L<http://wiki.freeswitch.org/wiki/Event_Socket_Library>
+
+=item L<http://wiki.freeswitch.org/wiki/Event_List>
 
 =back
 
