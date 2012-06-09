@@ -3,7 +3,7 @@ use warnings;
 
 use Test::More;
 
-use_ok('Log::Stash::Input::Freeswitch');
+use_ok('Message::Passing::Input::Freeswitch');
 
 done_testing;
 

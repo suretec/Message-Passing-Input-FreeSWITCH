@@ -5,14 +5,14 @@ use Test::More;
 plan skip_all => "hangs currently";
 
 use AnyEvent;
-use Log::Stash::Input::Freeswitch;
-use Log::Stash::Output::Test;
+use Message::Passing::Input::Freeswitch;
+use Message::Passing::Output::Test;
 
 my $cv = AnyEvent->condvar;
-my $output = Log::Stash::Output::Test->new(
+my $output = Message::Passing::Output::Test->new(
     cb => sub { $cv->send },
 );
-my $input = Log::Stash::Input::Freeswitch->new(
+my $input = Message::Passing::Input::Freeswitch->new(
     host => "localhost",
     secret => "FxRU%-gW?g9RxNJ{);qt",
     output_to => $output,
