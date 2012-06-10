@@ -1,3 +1,4 @@
+0.006
     - Change 'host' attribute to 'hostname' to match other
       inputs and outputs.
 
