@@ -3,7 +3,7 @@ NAME
 
 SYNOPSIS
         message-pass --input Freeswitch --input_options \
-            '{"host":"127.0.0.1","secret":"s3kriTk3y"}' \
+            '{"hostname":"127.0.0.1","secret":"s3kriTk3y"}' \
             --output STDOUT
 
 DESCRIPTION
@@ -14,7 +14,7 @@ DESCRIPTION
     and stream event messages.
 
 ATTRIBUTES
-  host
+  hostname
     The Freeswitch host to connect to.
 
   secret
