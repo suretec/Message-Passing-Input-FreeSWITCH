@@ -5,7 +5,7 @@ use Scalar::Util qw/ weaken /;
 use Try::Tiny qw/ try catch /;
 use namespace::autoclean;
 
-our $VERSION = '0.004';
+our $VERSION = '0.005';
 $VERSION = eval $VERSION;
 
 with qw/
