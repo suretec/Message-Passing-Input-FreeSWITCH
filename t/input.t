@@ -32,7 +32,7 @@ my $output = Message::Passing::Output::Test->new(
     cb => sub { $cv->send },
 );
 my $input = Message::Passing::Input::Freeswitch->new(
-    host => "foo",
+    hostname => "foo",
     secret => "bar",
     output_to => $output,
 );

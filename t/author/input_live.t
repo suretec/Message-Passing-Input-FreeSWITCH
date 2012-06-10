@@ -13,7 +13,7 @@ my $output = Message::Passing::Output::Test->new(
     cb => sub { $cv->send },
 );
 my $input = Message::Passing::Input::Freeswitch->new(
-    host => "localhost",
+    hostname => "localhost",
     secret => "FxRU%-gW?g9RxNJ{);qt",
     output_to => $output,
 );

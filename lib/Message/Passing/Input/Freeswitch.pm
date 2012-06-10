@@ -10,19 +10,10 @@ $VERSION = eval $VERSION;
 
 with qw/
     Message::Passing::Role::Input
+    Message::Passing::Role::HasHostnameAndPort
 /;
 
-has host => (
-    isa => 'Str',
-    required => 1,
-    is => 'ro',
-);
-
-has port => (
-    isa => 'Int',
-    is => 'ro',
-    default => 8021,
-);
+sub _default_port { 8021 }
 
 has secret => (
     is => 'ro',
@@ -50,9 +41,9 @@ has '_connection' => (
         require ESL;
         # FIXME Retarded SWIG bindings want the port number as a string, not an int
         #       so we explicitly stringify it
-        my $con = new ESL::ESLconnection($self->host, $self->port."", $self->secret);
+        my $con = new ESL::ESLconnection($self->hostname, $self->port."", $self->secret);
         unless ($con) {
-            warn("Could not connect to freeswitch on " . $self->host . ":" . $self->port);
+            warn("Could not connect to freeswitch on " . $self->hostname . ":" . $self->port);
             $self->_terminate_connection($self->connection_retry_timeout);
             $con = bless {}, 'ESL::ESLconnection';
         }
@@ -155,7 +146,7 @@ Message::Passing::Input::Freeswitch - input messages from Freeswitch.
 =head1 SYNOPSIS
 
     message-pass --input Freeswitch --input_options \
-        '{"host":"127.0.0.1","secret":"s3kriTk3y"}' \
+        '{"hostname":"127.0.0.1","secret":"s3kriTk3y"}' \
         --output STDOUT
 
 =head1 DESCRIPTION
@@ -168,7 +159,7 @@ to connect to a local or remote Freeswitch instance and stream event messages.
 
 =head1 ATTRIBUTES
 
-=head2 host
+=head2 hostname
 
 The Freeswitch host to connect to.
 
