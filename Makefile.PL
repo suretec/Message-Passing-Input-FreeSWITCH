@@ -6,6 +6,8 @@ all_from 'lib/Message/Passing/Input/Freeswitch.pm';
 
 license 'AGPL_3';
 
+authority 'cpan:GHENRY';
+
 requires 'Moose';
 requires 'namespace::autoclean';
 requires 'AnyEvent';
